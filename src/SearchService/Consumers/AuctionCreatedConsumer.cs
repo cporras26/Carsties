@@ -23,6 +23,6 @@ public class AuctionCreatedConsumer : IConsumer<AuctionCreated>
 
             if (item.Model == "Foo") throw new ArgumentException("Cannot sell cars with name of Foo");
 
-            await item.SaveAsync();
+            await DB.SaveAsync(item);
     }
 }

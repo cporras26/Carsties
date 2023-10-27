@@ -25,6 +25,7 @@ public class AuctionUpdatedConsumer : IConsumer<AuctionUpdated>
             .Match(a => a.ID == context.Message.Id)
             .ModifyOnly(x => new
             {
+                x.Model,
                 x.Color,
                 x.Make,
                 x.Year,

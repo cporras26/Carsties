@@ -10,12 +10,14 @@ public class AuctionDbContext : DbContext
     {
     }
 
+    // Not necessary to indicate Items DbSet as it is referenced already in Auctions.
     public DbSet<Auction> Auctions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
+        // Tables for Outbox MassTransit
         modelBuilder.AddInboxStateEntity();
         modelBuilder.AddOutboxMessageEntity();
         modelBuilder.AddOutboxStateEntity();

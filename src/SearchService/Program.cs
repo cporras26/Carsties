@@ -29,6 +29,7 @@ builder.Services.AddMassTransit(x =>
     {
         cfg.ReceiveEndpoint("search-auction-created", e =>
         {
+            //This is to account for transient errors like MongoDB database is not reachable.
             e.UseMessageRetry(r => r.Interval(5, 5));
             e.ConfigureConsumer<AuctionCreatedConsumer>(context);
         });

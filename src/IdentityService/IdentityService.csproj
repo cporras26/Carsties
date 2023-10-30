@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -17,5 +18,11 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.8"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.8"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.8"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@
     "flowbite": "^2.1.1",
     "flowbite-react": "^0.6.4",
     "next": "14.0.2",
+    "next-auth": "^4.24.5",
     "prettier": "^3.1.0",
     "prettier-plugin-tailwindcss": "^0.5.7",
     "query-string": "^8.1.0",

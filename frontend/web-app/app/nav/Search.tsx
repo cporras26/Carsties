@@ -2,9 +2,12 @@
 
 import { FaSearch } from "react-icons/fa";
 import { useParamsStore } from "@/hooks/useParamsStore";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Search() {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const setParams = useParamsStore((state) => state.setParams);
 
   const searchValue = useParamsStore((state) => state.searchValue);
@@ -15,6 +18,8 @@ export default function Search() {
   }
 
   function search() {
+    if (pathname !== "/") router.push("/");
+
     setParams({ searchTerm: searchValue });
   }
 

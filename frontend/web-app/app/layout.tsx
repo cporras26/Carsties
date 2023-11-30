@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "./nav/Navbar";
+import ToasterProvider from "@/app/providers/ToasterProvider";
 
 export const metadata: Metadata = {
   title: "Carsties",
@@ -23,8 +24,11 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-neutral-100">
+        <ToasterProvider />
         <Navbar />
-        <main className="container mx-auto px-5 py-10">{children}</main>
+        <main className="container mx-auto px-2 py-4 md:px-5 md:py-10">
+          {children}
+        </main>
       </body>
     </html>
   );

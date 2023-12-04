@@ -10,14 +10,16 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         //Mappings for GetAuctions
-        CreateMap<Auction, AuctionDto>().IncludeMembers(x => x.Item);
+        CreateMap<Auction, AuctionDto>().IncludeMembers(x => x.Item)
+            .ForMember(d => d.CurrentHighBid, opt => opt.MapFrom(src => src.CurrentHighBid.GetValueOrDefault()))
+            .ForMember(d => d.SoldAmount, opt => opt.MapFrom(src => src.SoldAmount.GetValueOrDefault()));
         CreateMap<Item, AuctionDto>();
-        
+
         //Mappings for CreateAuction
         CreateMap<CreateAuctionDto, Auction>()
-        .ForMember(d => d.Item, o => o.MapFrom(s => s));
+            .ForMember(d => d.Item, o => o.MapFrom(s => s));
         CreateMap<CreateAuctionDto, Item>();
-        
+
         //Mappings for UpdateAuction
         CreateMap<UpdateAuctionDto, Auction>()
             .ForMember(d => d.Item, o => o.MapFrom(s => s));

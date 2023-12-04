@@ -1,5 +1,4 @@
-﻿using AuctionService.Data;
-using AuctionService.DTOs;
+﻿using AuctionService.DTOs;
 using AuctionService.Entities;
 using AuctionService.Repositories;
 using AutoMapper;
@@ -14,9 +13,9 @@ namespace AuctionService.Controllers;
 [Route("api/auctions")]
 public class AuctionsController : ControllerBase
 {
-    private readonly IAuctionRepository _repository;
     private readonly IMapper _mapper;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IAuctionRepository _repository;
 
     public AuctionsController(IAuctionRepository repository, IMapper mapper,
         IPublishEndpoint publishEndpoint)
@@ -47,7 +46,7 @@ public class AuctionsController : ControllerBase
     public async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionDto createAuctionDto)
     {
         var auction = _mapper.Map<Auction>(createAuctionDto);
-        
+
         auction.Seller = User.Identity.Name;
 
         _repository.AddAuction(auction);
@@ -76,14 +75,14 @@ public class AuctionsController : ControllerBase
 
         if (auction.Seller != User.Identity.Name) return Forbid();
 
-        _mapper.Map<UpdateAuctionDto, Auction>(updateAuctionDto, auction);
+        _mapper.Map(updateAuctionDto, auction);
 
         await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auction));
 
         var result = await _repository.SaveChangesAsync();
 
         if (result) return Ok();
-        
+
         return BadRequest("Problem saving changes");
     }
 
@@ -94,9 +93,9 @@ public class AuctionsController : ControllerBase
         var auction = await _repository.GetAuctionEntityById(id);
 
         if (auction == null) return NoContent();
-        
+
         if (auction.Seller != User.Identity.Name) return Forbid();
-        
+
         _repository.RemoveAuction(auction);
 
         await _publishEndpoint.Publish<AuctionDeleted>(new { Id = auction.Id.ToString() });
@@ -107,5 +106,4 @@ public class AuctionsController : ControllerBase
 
         return Ok();
     }
-
 }

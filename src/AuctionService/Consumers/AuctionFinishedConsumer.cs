@@ -5,7 +5,7 @@ using MassTransit;
 
 namespace AuctionService.Consumers;
 
-public class AuctionFinishedConsumer: IConsumer<AuctionFinished>
+public class AuctionFinishedConsumer : IConsumer<AuctionFinished>
 {
     private readonly AuctionDbContext _dbContext;
 
@@ -13,11 +13,12 @@ public class AuctionFinishedConsumer: IConsumer<AuctionFinished>
     {
         this._dbContext = _dbContext;
     }
+
     public async Task Consume(ConsumeContext<AuctionFinished> context)
     {
         Console.WriteLine("--> Consuming AuctionFinished");
-        
-        var auction = await _dbContext.Auctions.FindAsync(context.Message.AuctionId);
+
+        var auction = await _dbContext.Auctions.FindAsync(Guid.Parse(context.Message.AuctionId));
 
         if (context.Message.ItemSold)
         {

@@ -9,3 +9,11 @@ body{
 .react-datepicker-wrapper {
     width: 100%;
 }
+
+@layer components {
+    .input-custom {
+        @apply flex-grow border-transparent bg-transparent pl-3
+        focus:border-transparent focus:outline-none focus:ring-0
+        text-xs text-gray-600 md:pl-4 md:text-sm
+    }
+}

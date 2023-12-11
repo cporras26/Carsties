@@ -1,4 +1,7 @@
-﻿import { getDetailedViewData } from "@/app/actions/auctionActions";
+﻿import {
+  getBidsForAuction,
+  getDetailedViewData,
+} from "@/app/actions/auctionActions";
 import Heading from "@/app/components/Heading";
 import CountdownTimer from "@/app/auctions/CountdownTimer";
 import CarImage from "@/app/auctions/CarImage";
@@ -6,6 +9,7 @@ import DetailedSpecs from "@/app/auctions/details/[id]/DetailedSpecs";
 import { getCurrentUser } from "@/app/actions/AuthActions";
 import EditButton from "@/app/auctions/details/[id]/EditButton";
 import DeleteButton from "@/app/auctions/details/[id]/DeleteButton";
+import BidList from "@/app/auctions/details/[id]/BidList";
 
 export default async function Details({ params }: { params: { id: string } }) {
   const data = await getDetailedViewData(params.id);
@@ -25,14 +29,12 @@ export default async function Details({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-6">
+      <div className="mt-3 grid auto-rows-fr grid-cols-1 gap-2 sm:gap-6 lg:grid-cols-2">
         <div className="aspect-h-7 aspect-w-14 overflow-hidden rounded-lg bg-gray-200">
           <CarImage imageUrl={data.imageUrl} />
         </div>
 
-        <div className="rounded-lg border-2 bg-gray-100 p-2">
-          <Heading title="Bids" />
-        </div>
+        <BidList user={user} auction={data} />
       </div>
 
       <div className="mt-3 grid grid-cols-1 rounded-lg">

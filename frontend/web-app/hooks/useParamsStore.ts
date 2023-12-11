@@ -1,4 +1,5 @@
 ﻿import { create } from "zustand";
+import { createWithEqualityFn } from "zustand/traditional";
 
 type State = {
   pageNumber: number;
@@ -32,7 +33,7 @@ const initialState: State = {
 
 //prettier-ignore
 export const useParamsStore 
-    = create<State & Actions>()((set) => ({
+    = createWithEqualityFn<State & Actions>()((set) => ({
   ...initialState,
 
   setParams: (newParams: Partial<State>) => {

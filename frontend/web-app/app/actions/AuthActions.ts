@@ -1,9 +1,9 @@
 ﻿import { getServerSession } from "next-auth";
-// @ts-ignore
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { cookies, headers } from "next/headers";
 import { NextApiRequest } from "next";
 import { getToken } from "next-auth/jwt";
+
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export async function getSession() {
   return await getServerSession(authOptions);

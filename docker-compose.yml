@@ -3,7 +3,7 @@ networks:
     ipam: #ip address manager
       config:
         - subnet: 10.5.0.0/16
-    
+
 services:
   postgres:
     image: postgres
@@ -35,7 +35,7 @@ services:
       context: . # Inside Cartsties directory
       dockerfile: src/AuctionService/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development # For default logs 
+      - ASPNETCORE_ENVIRONMENT=Development # For default logs
       - ASPNETCORE_URLS=http://+:80 # Internal url our auctionService webAPI
       - ASPNETCORE_URLS=http://+:7777 # Internal url our auctionService gRPC
       - RabbitMq__Host=rabbitmq
@@ -48,24 +48,24 @@ services:
     ports:
       - 7001:80 # The port it will listen to externally is 7001 webAPI
       - 7777:7777 # The port it will listen to externally is 7777 gRPC
-    depends_on: 
+    depends_on:
       - postgres
       - rabbitmq
     networks:
       custom:
-  search-svc: 
+  search-svc:
     image: cporras26/search-svc:latest
     build:
-      context: . 
+      context: .
       dockerfile: src/SearchService/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development 
-      - ASPNETCORE_URLS=http://+:80 
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
       - RabbitMq__Host=rabbitmq
       - ConnectionStrings__MongoDbConnection=mongodb://root:mongopw@mongodb
       - AuctionServiceUrl=http://auction-svc/
     ports:
-      - 7002:80 
+      - 7002:80
     depends_on:
       - mongodb
       - rabbitmq
@@ -158,8 +158,9 @@ services:
     image: nginxproxy/nginx-proxy
     ports:
       - 80:80
+      - 443:442
     networks:
       custom:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    
+      - ./devcerts:/etc/nginx/certs

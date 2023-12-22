@@ -27,15 +27,19 @@ builder.Services.AddMassTransit(x =>
 
     x.UsingRabbitMq((context, cfg) =>
     {
-        
+        cfg.UseRetry(r =>
+        {
+            r.Handle<RabbitMqConnectionException>();
+            r.Interval(5, TimeSpan.FromSeconds(10));
+        });
+
         cfg.Host(builder.Configuration["RabbitMq:Host"], "/",
             h =>
-        {
-            h.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
-            h.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
-            
-        });
-        
+            {
+                h.Username(builder.Configuration.GetValue("RabbitMq:Username", "guest"));
+                h.Password(builder.Configuration.GetValue("RabbitMq:Password", "guest"));
+            });
+
         cfg.ReceiveEndpoint("search-auction-created", e =>
         {
             //This is to account for transient errors like MongoDB database is not reachable.
@@ -56,19 +60,15 @@ app.MapControllers();
 
 app.Lifetime.ApplicationStarted.Register(async () =>
 {
-    try
-    {
-        await DbInitializer.InitDb(app);
-    }
-    catch (Exception e)
-    {
-        Console.WriteLine(e);
-    }
+    await Policy.Handle<TimeoutException>()
+        .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(10))
+        .ExecuteAndCaptureAsync(async () => await DbInitializer.InitDb(app));
 });
 
 app.Run();
 
 static IAsyncPolicy<HttpResponseMessage> GetPolicy()
-    => HttpPolicyExtensions.HandleTransientHttpError()
-    .WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(3));
-
+{
+    return HttpPolicyExtensions.HandleTransientHttpError()
+        .WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(3));
+}

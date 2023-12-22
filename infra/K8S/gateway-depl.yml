@@ -19,7 +19,7 @@ spec:
             - name: ClientApp
               value: https://app.carsties.com
             - name: IdentityServiceUrl
-              value: https://id.cporras26.net
+              value: https://id.caredox.net
 ---
 apiVersion: v1
 kind: Service

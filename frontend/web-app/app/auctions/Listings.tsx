@@ -55,12 +55,12 @@ export default function Listings() {
   return (
     <>
       <Filters />
-      {data.totalCount === 0 ? (
+      {data?.totalCount === 0 ? (
         <EmptyFilter showReset />
       ) : (
         <>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
-            {data.auctions.map((auction) => (
+            {data?.auctions?.map((auction) => (
               <AuctionCard auction={auction} key={auction.id} />
             ))}
           </div>

@@ -8,7 +8,7 @@ on:
       - 'frontend/web-app/**'
 
 env:
-  REGISTRY_IMAGE: cporras25/web-app
+  REGISTRY_IMAGE: cporras26/web-app
   DOCKERFILE: frontend/web-app/Dockerfile
   DEPLOYMENT_NAME: webapp
 

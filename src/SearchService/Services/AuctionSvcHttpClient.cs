@@ -5,8 +5,8 @@ namespace SearchService.Services;
 
 public class AuctionSvcHttpClient
 {
-    private readonly HttpClient _httpClient;
     private readonly IConfiguration _config;
+    private readonly HttpClient _httpClient;
 
     public AuctionSvcHttpClient(HttpClient httpClient, IConfiguration config)
     {
@@ -22,6 +22,6 @@ public class AuctionSvcHttpClient
             .ExecuteFirstAsync();
 
         return await _httpClient.GetFromJsonAsync<List<Item>>(
-            _config["AuctionServiceUrl"] + "api/auctions?date=" + lastUpdated);
+            _config["AuctionServiceUrl"] + "/api/auctions?date=" + lastUpdated);
     }
 }
